@@ -2,7 +2,8 @@
 const { generateUniqueId } = require("../utils/generateId.util");
 
 // Importa la función query que inserta un usuario en la base de datos
-const { user_create } = require("../queries/user.queries");
+const { user_create, user_getAll } = require("../queries/user.queries");
+
 
 // 🔹 Controlador para crear un nuevo usuario
 const userCreate = async (req, res) => {
@@ -87,5 +88,25 @@ const userCreate = async (req, res) => {
   }
 };
 
+// 🔹 Controlador para obtener todos los usuarios activos
+const userGetAll = async (req, res) => {
+  try {
+    const users = await user_getAll();
+    res.status(200).json({
+      success: true,
+      data: users,
+    });
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error al obtener usuarios",
+    });
+  }
+};
+
 // Exporta la función controladora para ser usada en las rutas
-module.exports = { userCreate };
+module.exports = {
+  userCreate,
+  userGetAll,
+};
