@@ -1,0 +1,120 @@
+
+===========================
+Tabla: user
+Descripción: Almacena información de los usuarios del sistema ByteBoard, incluyendo datos personales, contraseñas, estado laboral, y datos de auditoría.
+===========================
+
+Base de datos: db_byteboard
+Nombre de la tabla: user
+Clave primaria: user_id (VARCHAR(10))
+
+Campos:
+
+1. user_id (VARCHAR(10)) [PK]
+   - Descripción: ID único del usuario.
+   - Obligatorio: Sí
+
+2. user_identification (VARCHAR(20))
+   - Descripción: Cédula del usuario.
+   - Obligatorio: Sí
+
+3. user_name (VARCHAR(50))
+   - Descripción: Nombres y apellidos completos del usuario.
+   - Obligatorio: Sí
+
+4. user_companyMail (VARCHAR(100))
+   - Descripción: Correo institucional del usuario.
+   - Obligatorio: Sí
+
+5. user_personalMail (VARCHAR(100))
+   - Descripción: Correo personal del usuario.
+   - Obligatorio: No
+
+6. user_phone1 (VARCHAR(10))
+   - Descripción: Teléfono principal.
+   - Obligatorio: Sí
+
+7. user_phone2 (VARCHAR(10))
+   - Descripción: Teléfono secundario.
+   - Obligatorio: No
+
+8. user_addres (VARCHAR(150))
+   - Descripción: Dirección del usuario.
+   - Obligatorio: No
+
+9. user_birthday (DATE)
+   - Descripción: Fecha de nacimiento.
+   - Obligatorio: Sí
+
+10. user_picture (VARCHAR(200))
+    - Descripción: Ruta de la imagen de perfil.
+    - Obligatorio: No
+
+11. user_password (VARCHAR(300))
+    - Descripción: Contraseña actual.
+    - Obligatorio: Sí
+
+12. user_password1 (VARCHAR(300))
+    - Descripción: Contraseña anterior 1.
+    - Obligatorio: No
+
+13. user_password2 (VARCHAR(300))
+    - Descripción: Contraseña anterior 2.
+    - Obligatorio: No
+
+14. user_password3 (VARCHAR(300))
+    - Descripción: Contraseña anterior 3.
+    - Obligatorio: No
+
+15. user_passwordType (TINYINT)
+    - Descripción: Tipo de contraseña (1=permanente, 2=vencida, 3=temporal, 4=bloqueada).
+    - Obligatorio: Sí
+
+16. user_passwordDays (INT)
+    - Descripción: Días restantes para cambio de contraseña. Si llega a 0, se pasa el tipo a 2.
+    - Obligatorio: Sí
+
+17. user_passwordTries (INT)
+    - Descripción: Intentos fallidos de login. Máximo 3.
+    - Obligatorio: Sí (Default: 0)
+
+18. user_vacationDays (INT)
+    - Descripción: Días de vacaciones disponibles.
+    - Obligatorio: Sí (Default: 0)
+
+19. user_lastConection (DATETIME)
+    - Descripción: Última vez que el usuario se conectó.
+    - Obligatorio: Sí (Default: CURRENT_TIMESTAMP)
+
+20. user_star (DATE)
+    - Descripción: Fecha de ingreso a la empresa.
+    - Obligatorio: Sí
+
+21. user_end (DATE)
+    - Descripción: Fecha de salida de la empresa.
+    - Obligatorio: No
+
+22. user_state (INT)
+    - Descripción: Estado del usuario (1=activo, 2=inactivo, 3=suspendido).
+    - Obligatorio: Sí
+
+23. user_creationDate (DATE)
+    - Descripción: Fecha de creación del registro.
+    - Obligatorio: Sí
+
+24. user_creater (VARCHAR(10))
+    - Descripción: ID del usuario que creó el registro.
+    - Obligatorio: Sí
+
+25. user_updateDate (DATE)
+    - Descripción: Fecha de última actualización.
+    - Obligatorio: Sí
+
+26. user_updater (VARCHAR(10))
+    - Descripción: ID del usuario que hizo la última actualización.
+    - Obligatorio: Sí
+
+27. user_condition (BOOLEAN)
+    - Descripción: Condición del registro (TRUE = activo, FALSE = inactivo).
+    - Obligatorio: Sí (Default: TRUE)
+

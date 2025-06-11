@@ -7,7 +7,7 @@ const cors = require('cors');
 // Carga las variables de entorno desde el archivo .env
 require('dotenv').config();
 
-// Importa las rutas relacionadas con usuarios
+// Importa las rutas
 const userRoutes = require('./routes/user.routes');
 
 // Crea la instancia principal del servidor Express
@@ -19,8 +19,7 @@ app.use(express.json());
 // Middleware para habilitar CORS (permite comunicación entre frontend y backend)
 app.use(cors());
 
-// Monta las rutas del usuario bajo el prefijo /api/user
-// Ejemplo: POST http://localhost:3001/api/user
+// Monta las rutas
 app.use('/api/user', userRoutes);
 
 // Define el puerto del servidor a partir de las variables de entorno o por defecto 3001

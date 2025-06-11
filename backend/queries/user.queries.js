@@ -1,22 +1,99 @@
-// Importa mysql2 con soporte para promesas
-const mysql = require("mysql2/promise");
+// En user.queries.js
+const pool = require("../config/database");
 
-// Carga variables de entorno desde .env
-require("dotenv").config();
 
-// Crea un pool de conexiones a la base de datos usando los datos de .env
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,       // Host del servidor MySQL
-  user: process.env.DB_USER,       // Usuario de la base de datos
-  password: process.env.DB_PASSWORD, // Contraseña del usuario
-  database: process.env.DB_NAME    // Nombre de la base de datos
-});
+// 🔹 Query para crear un nuevo usuario
+// Recibe todos los campos de la tabla 'user'
+const user_create = async (
+  user_id,
+  user_identification,
+  user_name,
+  user_companyMail,
+  user_personalMail,
+  user_phone1,
+  user_phone2,
+  user_addres,
+  user_birthday,
+  user_picture,
+  user_password,
+  user_password1,
+  user_password2,
+  user_password3,
+  user_passwordType,
+  user_passwordDays,
+  user_passwordTries,
+  user_vacationDays,
+  user_lastConection,
+  user_star,
+  user_end,
+  user_state,
+  user_creationDate,
+  user_creater,
+  user_updateDate,
+  user_updater,
+  user_condition
+) => {
+  const sql = `
+    INSERT INTO user (
+      user_id,
+      user_identification,
+      user_name,
+      user_companyMail,
+      user_personalMail,
+      user_phone1,
+      user_phone2,
+      user_addres,
+      user_birthday,
+      user_picture,
+      user_password,
+      user_password1,
+      user_password2,
+      user_password3,
+      user_passwordType,
+      user_passwordDays,
+      user_passwordTries,
+      user_vacationDays,
+      user_lastConection,
+      user_star,
+      user_end,
+      user_state,
+      user_creationDate,
+      user_creater,
+      user_updateDate,
+      user_updater,
+      user_condition
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
 
-// Función que inserta un nuevo usuario en la tabla 'user'
-// Recibe: user_id (string), user_name (string), user_mail (string)
-const user_create = async (user_id, user_name, user_mail) => {
-  const sql = "INSERT INTO user (user_id, user_name, user_mail) VALUES (?, ?, ?)";
-  await pool.query(sql, [user_id, user_name, user_mail]);
+  await pool.query(sql, [
+    user_id,
+    user_identification,
+    user_name,
+    user_companyMail,
+    user_personalMail,
+    user_phone1,
+    user_phone2,
+    user_addres,
+    user_birthday,
+    user_picture,
+    user_password,
+    user_password1,
+    user_password2,
+    user_password3,
+    user_passwordType,
+    user_passwordDays,
+    user_passwordTries,
+    user_vacationDays,
+    user_lastConection,
+    user_star,
+    user_end,
+    user_state,
+    user_creationDate,
+    user_creater,
+    user_updateDate,
+    user_updater,
+    user_condition,
+  ]);
 };
 
 // Exporta la función para ser usada en el controlador

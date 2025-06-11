@@ -4,26 +4,86 @@ const { generateUniqueId } = require("../utils/generateId.util");
 // Importa la función query que inserta un usuario en la base de datos
 const { user_create } = require("../queries/user.queries");
 
-// Función controladora que se encarga de crear un nuevo usuario
-// Esta función será llamada desde la ruta POST /api/user
+// 🔹 Controlador para crear un nuevo usuario
 const userCreate = async (req, res) => {
-  // Extrae los datos del cuerpo de la petición
-  const { user_name, user_mail } = req.body;
-
   try {
-    // Genera un ID único para el nuevo usuario, de 10 caracteres
     const user_id = await generateUniqueId("user", "user_id");
 
-    // Inserta el usuario en la base de datos llamando a la query user_create
-    await user_create(user_id, user_name, user_mail);
+    // 📌 Datos recibidos del frontend
+    const {
+      user_identification,
+      user_name,
+      user_companyMail,
+      user_personalMail,
+      user_phone1,
+      user_phone2,
+      user_addres,
+      user_birthday,
+      user_picture,
+      user_password,
+    } = req.body;
 
-    // Responde con estado 201 (creado) y mensaje de éxito
-    res.status(201).json({ message: "Usuario creado correctamente" });
+    // 📌 Valores controlados desde backend
+    const now = new Date();
+    const user_password1 = null;
+    const user_password2 = null;
+    const user_password3 = null;
+    const user_passwordType = 1;
+    const user_passwordDays = 60;
+    const user_passwordTries = 0;
+    const user_vacationDays = 0;
+    const user_lastConection = now;
+    const user_star = now;
+    const user_end = null;
+    const user_state = 1;
+    const user_creationDate = now;
+    const user_creater = "admin"; // Temporalmente fijo
+    const user_updateDate = now;
+    const user_updater = "admin"; // Temporalmente fijo
+    const user_condition = true;
 
-  } catch (err) {
-    // Si ocurre un error, lo muestra en consola y responde con estado 500
-    console.error(err);
-    res.status(500).json({ error: "Error al crear usuario" });
+    // 📌 Ejecutar query
+    await user_create(
+      user_id,
+      user_identification,
+      user_name,
+      user_companyMail,
+      user_personalMail,
+      user_phone1,
+      user_phone2,
+      user_addres,
+      user_birthday,
+      user_picture,
+      user_password,
+      user_password1,
+      user_password2,
+      user_password3,
+      user_passwordType,
+      user_passwordDays,
+      user_passwordTries,
+      user_vacationDays,
+      user_lastConection,
+      user_star,
+      user_end,
+      user_state,
+      user_creationDate,
+      user_creater,
+      user_updateDate,
+      user_updater,
+      user_condition
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Usuario creado correctamente",
+      user_id,
+    });
+  } catch (error) {
+    console.error("Error al crear usuario:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error al crear usuario",
+    });
   }
 };
 
