@@ -10,6 +10,8 @@ export interface UserForm {
   user_birthday: string;
   user_picture: string;
   user_password: string;
+  user_startDate: string;
+  user_endDate: string | null; 
 }
 
 // 👤 Tipo completo de usuario (excepto contraseñas)
@@ -29,8 +31,8 @@ export interface User {
   user_passwordTries: number;
   user_vacationDays: number;
   user_lastConection: string;
-  user_star: string;
-  user_end: string | null;
+  user_startDate: string;
+  user_endDate: string | null;
   user_state: number;
   user_creationDate: string;
   user_creater: string;

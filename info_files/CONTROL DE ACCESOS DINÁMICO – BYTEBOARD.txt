@@ -1,0 +1,60 @@
+CONTROL DE ACCESOS DINÁMICO – BYTEBOARD
+
+Objetivo:
+---------
+Implementar un sistema de control de accesos flexible y dinámico en ByteBoard para asegurar que los usuarios solo interactúen con las opciones (páginas, botones, acciones) a las que tienen permiso explícito. Este sistema de permisos será la base para la seguridad y la personalización de interfaces por usuario o perfil.
+
+1. Identificación de Opciones del Sistema
+-----------------------------------------
+Cada opción del sistema debe registrarse en una tabla central con un ID único. Estas opciones pueden ser:
+- Páginas (ej: Página de Usuarios → ID: "PaginaUsuarios")
+- Botones (ej: Botón Crear Usuario → ID: "BotonCrearUsuario")
+- Acciones específicas del sistema (ej: Exportar Excel, Generar Reporte)
+
+Cada elemento que se quiera controlar deberá tener su entrada en la tabla de accesos.
+
+2. Mantenimiento "Control de Accesos"
+-------------------------------------
+Habrá un módulo llamado "Control de Accesos" que permite registrar y administrar todas las opciones del sistema. Este módulo contendrá:
+- ID de la opción (único)
+- Nombre descriptivo de la opción
+- Tipo de opción (página, botón, acción)
+- Contexto o módulo donde se usa (opcional)
+
+3. Asignación de Accesos
+------------------------
+Los accesos podrán asignarse a los usuarios de dos formas:
+
+A. Por perfiles (roles):
+- Se crean perfiles con una lista de IDs de opciones permitidas.
+- Cada usuario puede tener uno o más perfiles asignados.
+
+B. Por asignación directa:
+- Se puede asignar un ID de opción directamente a un usuario sin pasar por un perfil.
+
+4. Validación en tiempo de ejecución
+-------------------------------------
+Antes de que el usuario pueda:
+- Ingresar a una página,
+- Visualizar o usar un botón,
+- Ejecutar una acción protegida,
+
+el sistema debe verificar:
+- Si el usuario tiene un perfil que contiene ese ID de opción.
+- O si el usuario tiene ese ID de opción asignado directamente.
+
+Si no cumple ninguna de las condiciones, se bloquea el acceso o se oculta la funcionalidad.
+
+5. Tablas involucradas (a crear después del login)
+---------------------------------------------------
+- access_option: lista de todas las opciones del sistema con sus metadatos.
+- access_profile: perfiles del sistema.
+- access_profile_detail: opciones asignadas a cada perfil.
+- access_user_profile: perfiles asignados a cada usuario.
+- access_user_detail: accesos directos de opción asignados a cada usuario.
+
+6. Orden de Implementación
+---------------------------
+1. Primero se debe implementar login y gestión de sesiones.
+2. Una vez autenticado un usuario, se deben guardar en sesión sus IDs de opciones permitidas (por perfil y directas).
+3. Luego se integra la lógica de control de accesos en frontend y backend.

@@ -86,11 +86,11 @@ Campos:
     - Descripción: Última vez que el usuario se conectó.
     - Obligatorio: Sí (Default: CURRENT_TIMESTAMP)
 
-20. user_star (DATE)
+20. user_startDate (DATE)
     - Descripción: Fecha de ingreso a la empresa.
     - Obligatorio: Sí
 
-21. user_end (DATE)
+21. user_endDate (DATE)
     - Descripción: Fecha de salida de la empresa.
     - Obligatorio: No
 

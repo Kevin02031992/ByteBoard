@@ -24,8 +24,8 @@ const user_create = async (
   user_passwordTries,
   user_vacationDays,
   user_lastConection,
-  user_star,
-  user_end,
+  user_startDate,
+  user_endDate,
   user_state,
   user_creationDate,
   user_creater,
@@ -54,8 +54,8 @@ const user_create = async (
       user_passwordTries,
       user_vacationDays,
       user_lastConection,
-      user_star,
-      user_end,
+      user_startDate,
+      user_endDate,
       user_state,
       user_creationDate,
       user_creater,
@@ -85,8 +85,8 @@ const user_create = async (
     user_passwordTries,
     user_vacationDays,
     user_lastConection,
-    user_star,
-    user_end,
+    user_startDate,
+    user_endDate,
     user_state,
     user_creationDate,
     user_creater,
@@ -115,8 +115,8 @@ const user_getAll = async () => {
       user_passwordTries,
       user_vacationDays,
       user_lastConection,
-      user_star,
-      user_end,
+      user_startDate,
+      user_endDate,
       user_state,
       user_creationDate,
       user_creater,
@@ -130,6 +130,73 @@ const user_getAll = async () => {
   return rows;
 };
 
+// 🔹 Actualiza la información de un usuario según su ID
+const user_update = async (
+  user_identification,
+  user_name,
+  user_companyMail,
+  user_personalMail,
+  user_phone1,
+  user_phone2,
+  user_addres,
+  user_birthday,
+  user_picture,
+  user_startDate,
+  user_endDate,
+  user_updateDate,
+  user_updater,
+  user_id
+) => {
+  const sql = `
+    UPDATE user SET
+      user_identification = ?,
+      user_name = ?,
+      user_companyMail = ?,
+      user_personalMail = ?,
+      user_phone1 = ?,
+      user_phone2 = ?,
+      user_addres = ?,
+      user_birthday = ?,
+      user_picture = ?,
+      user_startDate = ?,
+      user_endDate = ?,
+      user_updateDate = ?,
+      user_updater = ?
+    WHERE user_id = ?
+  `;
+
+  await pool.query(sql, [
+    user_identification,
+    user_name,
+    user_companyMail,
+    user_personalMail,
+    user_phone1,
+    user_phone2,
+    user_addres,
+    user_birthday,
+    user_picture,
+    user_startDate,
+    user_endDate,
+    user_updateDate,
+    user_updater,
+    user_id
+  ]);
+};
+
+// 🔹 Desactiva lógicamente un usuario (soft delete)
+const user_delete = async (user_id) => {
+  const sql = `
+    UPDATE user
+    SET user_condition = false
+    WHERE user_id = ?
+  `;
+  await pool.query(sql, [user_id]);
+};
 
 // Exporta la función para ser usada en el controlador
-module.exports = { user_create, user_getAll };
+module.exports = {
+  user_create,
+  user_getAll,
+  user_update,
+  user_delete, 
+};

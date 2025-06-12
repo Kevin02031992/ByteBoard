@@ -1,0 +1,35 @@
+ByteBoard/
+│
+├── backend/                        # Backend con Express.js y MySQL
+│   ├── controllers/                # Lógica de negocio de cada entidad
+│   │   └── user.controller.js      # Funciones: userCreate, userGetAll
+│   ├── middlewares/               # Validaciones y autenticación (por implementar)
+│   ├── queries/                   # Funciones SQL organizadas
+│   │   └── user.queries.js        # user_create, user_getAll
+│   ├── routes/                    # Rutas Express
+│   │   └── user.routes.js         # POST /api/user, GET /api/user
+│   ├── utils/                     # Funciones reutilizables
+│   │   └── generateId.util.js     # generateUniqueId(tabla, primaryKeyField)
+│   ├── .env                       # Variables de entorno (DB, puerto)
+│   ├── index.js                   # Punto de entrada de Express
+│   └── package.json               # Scripts y dependencias
+│
+├── frontend/                      # Frontend con React + Vite + TypeScript
+│   ├── public/                    # Archivos estáticos (favicon, etc.)
+│   ├── src/
+│   │   ├── api/                   # Llamadas Axios al backend
+│   │   │   └── user.api.ts       # createUser, getAllUsers
+│   │   ├── types/                 # Tipos TypeScript compartidos
+│   │   │   └── user.ts           # UserForm, User
+│   │   ├── pages/                # Vistas de la app
+│   │   │   └── User.tsx          # Formulario + tabla de usuarios
+│   │   ├── App.tsx               # Componente principal de la app
+│   │   └── main.tsx              # Punto de entrada React
+│   ├── .env                      # VITE_API_URL=http://localhost:3001
+│   ├── index.html                # HTML base
+│   └── package.json              # Configuración de Vite
+│
+├── SQL_BIBLIA_DB_BYTEBOARD.txt   # Documentación de estructura SQL y campos
+├── README.md                     # Documentación general del proyecto
+├── ROADMAP.md                    # Tareas por etapa (CRUD, roles, seguridad)
+└── ISSUE_TEMPLATE.md             # Plantilla para issues en GitHub
