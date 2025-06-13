@@ -42,9 +42,9 @@ const userCreate = async (req, res) => {
     const user_endDate = null;
     const user_state = 1;
     const user_creationDate = now;
-    const user_creater = "admin"; // Temporalmente fijo
+    const user_creater = req.user.user_id;
     const user_updateDate = now;
-    const user_updater = "admin"; // Temporalmente fijo
+    const user_updater = req.user.user_id;
     const user_condition = true;
 
     // 📌 Ejecutar query
@@ -130,7 +130,7 @@ const userUpdate = async (req, res) => {
 
     // Valores controlados desde backend
     const user_updateDate = new Date();
-    const user_updater = "admin";
+    const user_updater = req.user.user_id;
 
     // Ejecutamos el query con los datos
     await user_update(

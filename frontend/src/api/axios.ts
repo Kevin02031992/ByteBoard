@@ -7,7 +7,34 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  // timeout: 5000, // Opcional: puedes agregar timeout si es necesario
 });
+
+// ✅ Interceptor para agregar token JWT automáticamente en cada petición
+api.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem("token");
+    // Asegura que headers no sea undefined
+    if (!config.headers) {
+      config.headers = {};
+    }
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => Promise.reject(error)
+);
+
+// 🚨 Interceptor para detectar respuestas no autorizadas (401)
+api.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;
