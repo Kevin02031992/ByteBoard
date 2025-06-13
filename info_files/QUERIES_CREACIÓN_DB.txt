@@ -39,3 +39,70 @@ CREATE TABLE IF NOT EXISTS user (
     user_updater VARCHAR(10) NOT NULL,
     user_condition BOOLEAN NOT NULL DEFAULT TRUE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE access (
+  access_id VARCHAR(10) PRIMARY KEY,
+  access_name VARCHAR(100) NOT NULL,
+  access_description VARCHAR(150),
+  access_path VARCHAR(150), -- ruta o identificador del botón/página
+  access_type TINYINT NOT NULL, -- 1=página, 2=botón, 3=acción, etc.
+
+  -- Auditoría
+  access_creationDate DATE NOT NULL,
+  access_creater VARCHAR(10) NOT NULL,
+  access_updateDate DATE NOT NULL,
+  access_updater VARCHAR(10) NOT NULL,
+  access_condition BOOLEAN NOT NULL DEFAULT TRUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE profile (
+  profile_id VARCHAR(10) PRIMARY KEY,
+  profile_name VARCHAR(100) NOT NULL,
+  profile_description VARCHAR(150),
+  -- Auditoría
+  profile_creationDate DATE NOT NULL,
+  profile_creater VARCHAR(10) NOT NULL,
+  profile_updateDate DATE NOT NULL,
+  profile_updater VARCHAR(10) NOT NULL,
+  profile_condition BOOLEAN NOT NULL DEFAULT TRUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE user_profile (
+  user_profile_id VARCHAR(10) PRIMARY KEY,
+  user_id VARCHAR(10) NOT NULL,
+  profile_id VARCHAR(10) NOT NULL,
+
+  -- Auditoría
+  user_profile_creationDate DATE NOT NULL,
+  user_profile_creater VARCHAR(10) NOT NULL,
+  user_profile_updateDate DATE NOT NULL,
+  user_profile_updater VARCHAR(10) NOT NULL,
+  user_profile_condition BOOLEAN NOT NULL DEFAULT TRUE,
+);
+
+CREATE TABLE profile_access (
+  profile_access_id VARCHAR(10) PRIMARY KEY,
+  profile_id VARCHAR(10) NOT NULL,
+  access_id VARCHAR(10) NOT NULL,
+
+  -- Auditoría
+  profile_access_creationDate DATE NOT NULL,
+  profile_access_creater VARCHAR(10) NOT NULL,
+  profile_access_updateDate DATE NOT NULL,
+  profile_access_updater VARCHAR(10) NOT NULL,
+  profile_access_condition BOOLEAN NOT NULL DEFAULT TRUE,
+);
+
+CREATE TABLE user_access (
+  user_access_id VARCHAR(10) PRIMARY KEY,
+  user_id VARCHAR(10) NOT NULL,
+  access_id VARCHAR(10) NOT NULL,  
+
+  -- Auditoría
+  user_access_creationDate DATE NOT NULL,
+  user_access_creater VARCHAR(10) NOT NULL,
+  user_access_updateDate DATE NOT NULL,
+  user_access_updater VARCHAR(10) NOT NULL,
+  user_access_condition BOOLEAN NOT NULL DEFAULT TRUE,
+);
