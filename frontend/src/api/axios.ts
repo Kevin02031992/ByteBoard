@@ -4,9 +4,6 @@ import axios from "axios";
 // 🧱 Instancia base de Axios para consumir la API del backend
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // Cargado desde .env
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 // ✅ Interceptor para agregar token JWT automáticamente en cada petición

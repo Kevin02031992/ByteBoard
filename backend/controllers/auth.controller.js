@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 const { auth_findUserByIdentification } = require("../queries/auth.queries");
 
@@ -15,10 +16,13 @@ const loginUser = async (req, res) => {
 
     const user = rows[0];
 
-    if (user.user_password !== user_password) {
+    // 🔐 Comparar contraseña con el hash almacenado
+    const isMatch = await bcrypt.compare(user_password, user.user_password);
+    if (!isMatch) {
       return res.status(401).json({ message: "Contraseña incorrecta." });
     }
 
+    // 🎟️ Crear token
     const token = jwt.sign(
       { user_id: user.user_id, user_name: user.user_name },
       process.env.JWT_SECRET,
@@ -27,6 +31,7 @@ const loginUser = async (req, res) => {
 
     res.json({ token, user });
   } catch (error) {
+    console.error("Error en login:", error);
     res.status(500).json({ message: "Error en el servidor", error });
   }
 };

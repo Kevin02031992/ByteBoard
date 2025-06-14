@@ -1,0 +1,10 @@
+.btn-hover-effect {
+  border: 1px solid transparent !important;
+}
+
+.btn-hover-effect:hover {
+  background-color: white !important;
+  color: black !important;
+  border-color: #ced4da !important;
+  transition: all 0.2s ease-in-out;
+}

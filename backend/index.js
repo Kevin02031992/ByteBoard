@@ -3,9 +3,12 @@ const express = require('express');
 
 // Importa cors para permitir peticiones desde otros orígenes (como el frontend en otro puerto)
 const cors = require('cors');
-
+const path = require("path");
 // Carga las variables de entorno desde el archivo .env
 require('dotenv').config();
+
+
+
 
 // Importa las rutas
 const userRoutes = require('./routes/user.routes');
@@ -31,3 +34,6 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
+
+// 🧩 Línea para servir archivos estáticos
+app.use("/multimedia", express.static(path.join(__dirname, "multimedia")));

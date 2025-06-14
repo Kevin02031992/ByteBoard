@@ -8,7 +8,7 @@ export interface UserForm {
   user_phone2: string;
   user_addres: string;
   user_birthday: string;
-  user_picture: string;
+  user_picture: File | null;
   user_password: string;
   user_startDate: string;
   user_endDate: string | null; 
@@ -39,4 +39,10 @@ export interface User {
   user_updateDate: string;
   user_updater: string;
   user_condition: boolean;
+}
+
+export interface CreateUserResponse {
+  user_id: string;
+  message: string;
+  success: boolean;
 }
