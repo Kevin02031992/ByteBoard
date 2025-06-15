@@ -91,7 +91,7 @@ const UserPage = () => {
             setUsers(res);
             setFilteredUsers(res); // Inicialmente sin filtros
         } catch (error) {
-            console.error("Error al obtener usuarios:", error);
+            console.error(`Error al obtener ${error}`, "error");
         }
     };
 

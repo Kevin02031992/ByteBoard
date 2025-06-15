@@ -32,6 +32,9 @@ const Navbar = () => {
               <Link to="/user" className="nav-link text-white">Usuarios</Link>
             </li>
             <li className="nav-item">
+              <Link to="/access" className="nav-link text-white">Accesos</Link>
+            </li>
+            <li className="nav-item">
               <button
                 onClick={handleLogout}
                 className="btn btn-outline-light d-flex align-items-center gap-2"

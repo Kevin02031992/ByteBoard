@@ -7,12 +7,10 @@ const path = require("path");
 // Carga las variables de entorno desde el archivo .env
 require('dotenv').config();
 
-
-
-
 // Importa las rutas
 const userRoutes = require('./routes/user.routes');
 const authRoutes = require("./routes/auth.routes");
+const accessRoutes = require("./routes/access.routes");
 
 // Crea la instancia principal del servidor Express
 const app = express();
@@ -26,6 +24,7 @@ app.use(cors());
 // Monta las rutas
 app.use('/api/user', userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/access", accessRoutes);
 
 // Define el puerto del servidor a partir de las variables de entorno o por defecto 3001
 const PORT = process.env.PORT || 3001;

@@ -1,5 +1,5 @@
 import React from "react";
-import { PersonPlus, PersonDash, Eye, Pencil, ArrowClockwise, Search, XCircle, Upload, Eraser } from "react-bootstrap-icons";
+import { PersonPlus, PersonDash, Eye, Pencil, ArrowClockwise, Search, XCircle, Upload, Eraser, Key, Ban } from "react-bootstrap-icons";
 
 interface ButtonProps {
   label: React.ReactNode;
@@ -8,8 +8,9 @@ interface ButtonProps {
   style?: React.CSSProperties;
   disabled?: boolean;
   size?: "sm" | "lg";
-  use?: "addUser" | "deleteUser" | "viewUser" | "editUser" | "reload" | "search" | "cancel" | "upload" | "delete";
-  type?: "button" | "submit" | "reset"; // ✅ Asegúrate de tener esto
+  use?: "addUser" | "deleteUser" | "viewUser" | "editUser" | "reload" | "search" | "cancel" | "upload" | "delete" |
+  "addAccess" | "viewAccess" | "editAccess" | "deleteAccess";
+  type?: "button" | "submit" | "reset"; 
 }
 
 const ButtonComponent: React.FC<ButtonProps> = ({
@@ -43,7 +44,15 @@ const ButtonComponent: React.FC<ButtonProps> = ({
       case "upload":
         return <Upload className="me-1" />;
       case "delete":
-        return <Eraser className="me-1" />;  
+        return <Eraser className="me-1" />;
+      case "addAccess":
+        return <Key className="me-1" />;
+      case "viewAccess":
+        return <Eye className="me-1" />;
+        case "editAccess":
+        return <Pencil className="me-1" />;
+        case "deleteAccess":
+        return <Ban className="me-1" />;
       default:
         return null;
     }
