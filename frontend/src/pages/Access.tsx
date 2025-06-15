@@ -15,6 +15,7 @@ import ModalUpdate from "../components/ModalUpdate";
 import ModalDecision from "../components/ModalDecision";
 import ModalAlert from "../components/ModalAlert";
 import { ArrowLeftCircle, ArrowRightCircle } from "react-bootstrap-icons";
+import { formatDate } from "../utils/formatDate.util";
 
 const AccessPage = () => {
     const [accessList, setAccessList] = useState<Access[]>([]);
@@ -46,7 +47,7 @@ const AccessPage = () => {
 
     useEffect(() => {
         fetchAccess();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchAccess = async () => {
@@ -193,8 +194,8 @@ const AccessPage = () => {
                     <TableComponent
                         headers={["Nombre", "Descripción", "ID de Acceso", "Tipo", "Acciones"]}
                         centered
-                    >
-                        {currentAccess.map((a) => (
+                    >{currentAccess.length > 0 ? (
+                        currentAccess.map((a) => (
                             <tr key={a.access_id}>
                                 <td>{a.access_name}</td>
                                 <td>{a.access_description || "—"}</td>
@@ -250,7 +251,14 @@ const AccessPage = () => {
                                     </div>
                                 </td>
                             </tr>
-                        ))}
+                        ))
+                    ) : (
+                        <tr key="no-data">
+                            <td colSpan={5} className="text-center text-muted py-3">
+                                No hay accesos registrados.
+                            </td>
+                        </tr>
+                    )}
                     </TableComponent>
                 </div>
 
@@ -269,7 +277,7 @@ const AccessPage = () => {
                             className="text-white btn-hover-effect"
                             style={{ backgroundColor: "#6c757d", border: "none", width: "60px", height: "40px" }}
                             onClick={nextPage}
-                            disabled={currentPage === totalPages}
+                            disabled={currentPage === 1 || totalPages === 0}
                         />
                     </div>
                     <span className="text-muted small">Página {currentPage} de {totalPages}</span>
@@ -410,7 +418,7 @@ const AccessPage = () => {
                     }}
                 >
                     <div className="px-3 py-2">
-                        <p><strong>ID:</strong> {selectedAccess.access_id}</p>
+                        <h6 className="fw-bold border-bottom pb-1 mb-3"><i className="bi bi-window me-2"></i>Información general del registro</h6>
                         <p><strong>Nombre:</strong> {selectedAccess.access_name}</p>
                         <p><strong>Descripción:</strong> {selectedAccess.access_description || "—"}</p>
                         <p><strong>Ruta / Identificador:</strong> {selectedAccess.access_path || "—"}</p>
@@ -422,10 +430,11 @@ const AccessPage = () => {
                                 3: "Acción",
                             }[selectedAccess.access_type] || "Otro"}
                         </p>
-                        <p><strong>Creado por:</strong> {selectedAccess.access_creater}</p>
-                        <p><strong>Fecha de creación:</strong> {selectedAccess.access_creationDate}</p>
-                        <p><strong>Última actualización:</strong> {selectedAccess.access_updateDate}</p>
-                        <p><strong>Actualizado por:</strong> {selectedAccess.access_updater}</p>
+                        <h6 className="fw-bold border-bottom pb-1 my-3"><i className="bi bi-shield-check me-2"></i>Información de auditoría</h6>
+                        <p><strong>Creado por:</strong> {selectedAccess.access_creater_name}</p>
+                        <p><strong>Fecha de creación:</strong> {formatDate(selectedAccess.access_creationDate)}</p>
+                        <p><strong>Actualizado por:</strong> {selectedAccess.access_updater_name}</p>
+                        <p><strong>Fecha de última actualización:</strong> {formatDate(selectedAccess.access_updateDate)}</p>
                         <p><strong>Condición:</strong> {selectedAccess.access_condition ? "Activo" : "Inactivo"}</p>
                     </div>
                 </ModalRead>

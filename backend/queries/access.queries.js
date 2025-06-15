@@ -36,8 +36,14 @@ const access_create = async (
 // 🔍 Obtener accesos activos
 const access_getAll = async () => {
   const sql = `
-    SELECT * FROM access
-    WHERE access_condition = true
+    SELECT 
+      a.*,
+      u1.user_name AS access_creater_name,
+      u2.user_name AS access_updater_name
+    FROM access a
+    LEFT JOIN user u1 ON u1.user_id = a.access_creater
+    LEFT JOIN user u2 ON u2.user_id = a.access_updater
+    WHERE a.access_condition = true
   `;
   const [rows] = await db.execute(sql);
   return rows;

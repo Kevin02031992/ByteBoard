@@ -4,6 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import UserPage from "./pages/User";
 import Login from "./pages/Login";
 import Access from "./pages/Access";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -13,10 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         {/* Rutas protegidas */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
+        <Route path="/" element={<ProtectedRoute>
               <Home />
             </ProtectedRoute>
           }
@@ -36,6 +34,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Access />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

@@ -9,8 +9,8 @@ interface ButtonProps {
   disabled?: boolean;
   size?: "sm" | "lg";
   use?: "addUser" | "deleteUser" | "viewUser" | "editUser" | "reload" | "search" | "cancel" | "upload" | "delete" |
-  "addAccess" | "viewAccess" | "editAccess" | "deleteAccess";
-  type?: "button" | "submit" | "reset"; 
+  "addAccess" | "viewAccess" | "editAccess" | "deleteAccess" | "addProfile" | "viewProfile" | "editProfile" | "deleteProfile";
+  type?: "button" | "submit" | "reset";
 }
 
 const ButtonComponent: React.FC<ButtonProps> = ({
@@ -28,12 +28,17 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   const getIcon = () => {
     switch (use) {
       case "addUser":
+      case "addProfile":
         return <PersonPlus className="me-1" />;
       case "deleteUser":
         return <PersonDash className="me-1" />;
       case "viewUser":
+      case "viewAccess":  
+      case "viewProfile":
         return <Eye className="me-1" />;
       case "editUser":
+      case "editAccess":
+      case "editProfile":
         return <Pencil className="me-1" />;
       case "reload":
         return <ArrowClockwise className="me-1" />;
@@ -47,11 +52,8 @@ const ButtonComponent: React.FC<ButtonProps> = ({
         return <Eraser className="me-1" />;
       case "addAccess":
         return <Key className="me-1" />;
-      case "viewAccess":
-        return <Eye className="me-1" />;
-        case "editAccess":
-        return <Pencil className="me-1" />;
-        case "deleteAccess":
+      case "deleteAccess":
+      case "deleteProfile":
         return <Ban className="me-1" />;
       default:
         return null;

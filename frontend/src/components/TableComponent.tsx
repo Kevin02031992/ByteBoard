@@ -38,7 +38,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ headers, children, cent
             fontSize: "0.92rem",
           }}
         >
-          {children}
+           {React.Children.toArray(children)}
         </tbody>
       </table>
     </div>

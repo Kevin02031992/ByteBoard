@@ -1,0 +1,144 @@
+===========================
+Tabla: user
+Descripción: Almacena información de los usuarios del sistema ByteBoard, incluyendo datos personales, contraseñas, estado laboral, y datos de auditoría.
+===========================
+
+Base de datos: db_byteboard
+Nombre de la tabla: user
+Clave primaria: user_id (VARCHAR(10))
+
+Campos:
+
+1. user_id (VARCHAR(10)) [PK]   - Descripción: ID único del usuario.   - Obligatorio: Sí
+2. user_identification (VARCHAR(20))   - Descripción: Cédula del usuario.   - Obligatorio: Sí
+3. user_name (VARCHAR(50))   - Descripción: Nombres y apellidos completos del usuario.   - Obligatorio: Sí
+4. user_companyMail (VARCHAR(100))   - Descripción: Correo institucional del usuario.   - Obligatorio: Sí
+5. user_personalMail (VARCHAR(100))   - Descripción: Correo personal del usuario.   - Obligatorio: No
+6. user_phone1 (VARCHAR(10))   - Descripción: Teléfono principal.   - Obligatorio: Sí
+7. user_phone2 (VARCHAR(10))   - Descripción: Teléfono secundario.   - Obligatorio: No
+8. user_addres (VARCHAR(150))   - Descripción: Dirección del usuario.   - Obligatorio: No
+9. user_birthday (DATE)   - Descripción: Fecha de nacimiento.   - Obligatorio: Sí
+10. user_picture (VARCHAR(200))    - Descripción: Ruta de la imagen de perfil.    - Obligatorio: No
+11. user_password (VARCHAR(300))    - Descripción: Contraseña actual.    - Obligatorio: Sí
+12. user_password1 (VARCHAR(300))    - Descripción: Contraseña anterior 1.    - Obligatorio: No
+13. user_password2 (VARCHAR(300))    - Descripción: Contraseña anterior 2.    - Obligatorio: No
+14. user_password3 (VARCHAR(300))    - Descripción: Contraseña anterior 3.    - Obligatorio: No
+15. user_passwordType (TINYINT)    - Descripción: Tipo de contraseña (1=permanente, 2=vencida, 3=temporal, 4=bloqueada).    - Obligatorio: Sí
+16. user_passwordDays (INT)    - Descripción: Días restantes para cambio de contraseña. Si llega a 0, se pasa el tipo a 2.    - Obligatorio: Sí
+17. user_passwordTries (INT)    - Descripción: Intentos fallidos de login. Máximo 3.    - Obligatorio: Sí (Default: 0)
+18. user_vacationDays (INT)    - Descripción: Días de vacaciones disponibles.    - Obligatorio: Sí (Default: 0)
+19. user_lastConection (DATETIME)    - Descripción: Última vez que el usuario se conectó.    - Obligatorio: Sí (Default: CURRENT_TIMESTAMP)
+20. user_startDate (DATE)    - Descripción: Fecha de ingreso a la empresa.    - Obligatorio: Sí
+21. user_endDate (DATE)    - Descripción: Fecha de salida de la empresa.    - Obligatorio: No
+22. user_state (INT)    - Descripción: Estado del usuario (1=activo, 2=inactivo, 3=suspendido).    - Obligatorio: Sí
+23. user_creationDate (DATE)    - Descripción: Fecha de creación del registro.    - Obligatorio: Sí
+24. user_creater (VARCHAR(10))    - Descripción: ID del usuario que creó el registro.    - Obligatorio: Sí
+25. user_updateDate (DATE)    - Descripción: Fecha de última actualización.    - Obligatorio: Sí
+26. user_updater (VARCHAR(10))    - Descripción: ID del usuario que hizo la última actualización.    - Obligatorio: Sí
+27. user_condition (BOOLEAN)    - Descripción: Condición del registro (TRUE = activo, FALSE = inactivo).    - Obligatorio: Sí (Default: TRUE)
+
+===========================
+Tabla: access
+Descripción: Define cada opción del sistema (página, botón, acción) que puede protegerse mediante control de accesos. Sirve como catálogo maestro de elementos controlables.
+===========================
+
+Base de datos: db_byteboard  
+Nombre de la tabla: access  
+Clave primaria: access_id (VARCHAR(10))  
+
+Campos:
+
+1. access_id (VARCHAR(10)) [PK]     - Descripción: ID único de la opción protegida.     - Obligatorio: Sí
+2. access_name (VARCHAR(100))     - Descripción: Nombre legible de la opción (ej: "Crear Usuario").     - Obligatorio: Sí
+3. access_description (VARCHAR(150))     - Descripción: Descripción funcional de la opción protegida.     - Obligatorio: No
+4. access_path (VARCHAR(150))     - Descripción: Ruta del sistema o identificador del componente.     - Obligatorio: No
+5. access_type (TINYINT)     - Descripción: Tipo de elemento (1=página, 2=botón, 3=acción).     - Obligatorio: Sí
+6. access_creationDate (DATE)     - Descripción: Fecha de creación del registro.     - Obligatorio: Sí
+7. access_creater (VARCHAR(10))     - Descripción: ID del usuario que creó el registro.     - Obligatorio: Sí
+8. access_updateDate (DATE)     - Descripción: Fecha de última modificación.     - Obligatorio: Sí
+9. access_updater (VARCHAR(10))     - Descripción: ID del usuario que actualizó el registro.     - Obligatorio: Sí
+10. access_condition (BOOLEAN)      - Descripción: Condición del registro (TRUE = activo, FALSE = inactivo).      - Obligatorio: Sí (Default: TRUE)
+
+
+===========================
+Tabla: profile
+Descripción: Registra los perfiles de acceso del sistema. Cada perfil puede agrupar múltiples accesos.
+===========================
+
+Base de datos: db_byteboard  
+Nombre de la tabla: profile  
+Clave primaria: profile_id (VARCHAR(10))  
+
+Campos:
+
+1. profile_id (VARCHAR(10)) [PK]     - Descripción: ID único del perfil.     - Obligatorio: Sí
+2. profile_name (VARCHAR(100))     - Descripción: Nombre del perfil (ej: "Administrador").     - Obligatorio: Sí
+3. profile_description (VARCHAR(150))     - Descripción: Breve descripción de funciones o alcance del perfil.     - Obligatorio: No
+4. profile_creationDate (DATE)     - Descripción: Fecha de creación del perfil.     - Obligatorio: Sí
+5. profile_creater (VARCHAR(10))     - Descripción: ID del usuario que creó el perfil.     - Obligatorio: Sí
+6. profile_updateDate (DATE)     - Descripción: Fecha de última modificación del perfil.     - Obligatorio: Sí
+7. profile_updater (VARCHAR(10))     - Descripción: ID del usuario que actualizó el perfil.     - Obligatorio: Sí
+8. profile_condition (BOOLEAN)     - Descripción: Condición del registro (TRUE = activo, FALSE = inactivo).     - Obligatorio: Sí (Default: TRUE)
+
+
+===========================
+Tabla: user_profile
+Descripción: Relaciona usuarios con perfiles asignados. Cada usuario puede tener uno o varios perfiles.
+===========================
+
+Base de datos: db_byteboard  
+Nombre de la tabla: user_profile  
+Clave primaria: user_profile_id (VARCHAR(10))  
+
+Campos:
+
+1. user_profile_id (VARCHAR(10)) [PK]     - Descripción: ID único del registro de relación.     - Obligatorio: Sí
+2. user_id (VARCHAR(10))     - Descripción: ID del usuario asignado.     - Obligatorio: Sí
+3. profile_id (VARCHAR(10))     - Descripción: ID del perfil asignado.     - Obligatorio: Sí
+4. user_profile_creationDate (DATE)     - Descripción: Fecha de creación del registro.     - Obligatorio: Sí
+5. user_profile_creater (VARCHAR(10))     - Descripción: ID del usuario que creó el registro.     - Obligatorio: Sí
+6. user_profile_updateDate (DATE)     - Descripción: Fecha de última modificación.     - Obligatorio: Sí
+7. user_profile_updater (VARCHAR(10))     - Descripción: ID del usuario que actualizó el registro.     - Obligatorio: Sí
+8. user_profile_condition (BOOLEAN)     - Descripción: Condición del registro (TRUE = activo, FALSE = inactivo).     - Obligatorio: Sí (Default: TRUE)
+
+
+===========================
+Tabla: profile_access
+Descripción: Define las opciones (accesos) asociadas a cada perfil. Permite controlar el conjunto de permisos agrupados por perfil.
+===========================
+
+Base de datos: db_byteboard  
+Nombre de la tabla: profile_access  
+Clave primaria: profile_access_id (VARCHAR(10))  
+
+Campos:
+
+1. profile_access_id (VARCHAR(10)) [PK]     - Descripción: ID único del registro de relación.     - Obligatorio: Sí
+2. profile_id (VARCHAR(10))     - Descripción: ID del perfil que tiene acceso.     - Obligatorio: Sí
+3. access_id (VARCHAR(10))     - Descripción: ID de la opción permitida.     - Obligatorio: Sí
+4. profile_access_creationDate (DATE)     - Descripción: Fecha de creación del registro.     - Obligatorio: Sí
+5. profile_access_creater (VARCHAR(10))     - Descripción: ID del usuario que creó el registro.     - Obligatorio: Sí
+6. profile_access_updateDate (DATE)     - Descripción: Fecha de última modificación.     - Obligatorio: Sí
+7. profile_access_updater (VARCHAR(10))     - Descripción: ID del usuario que actualizó el registro.     - Obligatorio: Sí
+8. profile_access_condition (BOOLEAN)     - Descripción: Condición del registro (TRUE = activo, FALSE = inactivo).     - Obligatorio: Sí (Default: TRUE)
+
+
+===========================
+Tabla: user_access
+Descripción: Define accesos directos que un usuario tiene a opciones específicas, sin depender de perfiles.
+===========================
+
+Base de datos: db_byteboard  
+Nombre de la tabla: user_access  
+Clave primaria: user_access_id (VARCHAR(10))  
+
+Campos:
+
+1. user_access_id (VARCHAR(10)) [PK]     - Descripción: ID único del registro de relación.    - Obligatorio: Sí
+2. user_id (VARCHAR(10))     - Descripción: ID del usuario que tiene el acceso directo.     - Obligatorio: Sí
+3. access_id (VARCHAR(10))     - Descripción: ID de la opción permitida.     - Obligatorio: Sí
+4. user_access_creationDate (DATE)     - Descripción: Fecha de creación del registro.     - Obligatorio: Sí
+5. user_access_creater (VARCHAR(10))     - Descripción: ID del usuario que creó el registro.     - Obligatorio: Sí
+6. user_access_updateDate (DATE)     - Descripción: Fecha de última modificación.     - Obligatorio: Sí
+7. user_access_updater (VARCHAR(10))     - Descripción: ID del usuario que actualizó el registro.     - Obligatorio: Sí
+8. user_access_condition (BOOLEAN)     - Descripción: Condición del registro (TRUE = activo, FALSE = inactivo).     - Obligatorio: Sí (Default: TRUE)

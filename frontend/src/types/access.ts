@@ -10,6 +10,8 @@ export interface Access {
   access_updateDate: string;
   access_updater: string;
   access_condition: boolean;
+  access_creater_name: string;
+  access_updater_name: string;
 }
 
 // 📥 Modelo del formulario de creación/edición
