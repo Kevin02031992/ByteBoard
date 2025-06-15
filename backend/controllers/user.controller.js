@@ -4,7 +4,7 @@ const path = require("path");
 const fs = require("fs");
 const sharp = require("sharp");
 const bcrypt = require("bcrypt");
-
+const db = require("../config/database");
 
 // Importa la función de queries
 const {
@@ -53,7 +53,6 @@ const userCreate = async (req, res) => {
     const final_user_endDate = user_endDate === "" ? null : user_endDate;
     const hashedPassword = await bcrypt.hash(user_password, 10); // 🔐 nivel de seguridad 10
 
-
     // 📁 Definir nombre final de imagen
     let finalImagePath = "";
 
@@ -78,7 +77,7 @@ const userCreate = async (req, res) => {
         .toFile(newPath);
 
       fs.unlinkSync(req.file.path); // eliminar temporal
- 
+
       console.log("✅ Imagen guardada en:", newPath);
 
       // Guardar la ruta relativa en la base
@@ -147,51 +146,104 @@ const userGetAll = async (req, res) => {
   }
 };
 
-// 🔹 Actualiza datos generales del usuario
+// 🔄 Controlador para actualizar un usuario
 const userUpdate = async (req, res) => {
+  const userId = req.params.id;
+  const {
+    user_identification,
+    user_name,
+    user_companyMail,
+    user_personalMail,
+    user_phone1,
+    user_phone2,
+    user_addres,
+    user_birthday,
+    user_startDate,
+    user_endDate,
+    delete_picture, // desde frontend
+  } = req.body;
+
   try {
-    // Obtenemos los datos del cuerpo de la solicitud
-    const user_id = req.params.id;
-    const {
-      user_identification,
-      user_name,
-      user_companyMail,
-      user_personalMail,
-      user_phone1,
-      user_phone2,
-      user_addres,
-      user_birthday,
-      user_picture,
-      user_startDate,
-      user_endDate,
-    } = req.body;
-
-    // Valores controlados desde backend
-    const user_updateDate = new Date();
-    const user_updater = req.user.user_id;
-
-    // Ejecutamos el query con los datos
-    await user_update(
-      user_identification,
-      user_name,
-      user_companyMail,
-      user_personalMail,
-      user_phone1,
-      user_phone2,
-      user_addres,
-      user_birthday,
-      user_picture,
-      user_startDate,
-      user_endDate,
-      user_updateDate,
-      user_updater,
-      user_id
+    const now = new Date();
+    const updater = req.user?.user_id || "system";
+    const uploadDir = path.join(
+      __dirname,
+      "..",
+      "multimedia",
+      "profiles_pictures"
     );
 
-    res.status(200).json({ message: "Usuario actualizado correctamente" });
+    // 🧠 Buscar imagen anterior
+    const [userData] = await db.execute(
+      "SELECT user_picture FROM user WHERE user_id = ?",
+      [userId]
+    );
+    const oldPic = userData[0]?.user_picture;
+
+    let finalImagePath = oldPic || "";
+
+    // 📷 Nueva imagen cargada
+    if (req.file) {
+      // Eliminar anterior si existe
+      if (oldPic) {
+        const fullOldPath = path.join(__dirname, "..", oldPic);
+        if (fs.existsSync(fullOldPath)) fs.unlinkSync(fullOldPath);
+      }
+
+      // Crear carpeta si no existe
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+
+      // Generar nuevo nombre
+      const ext = path.extname(req.file.originalname);
+      const newFilename = `profile_picture_${userId}_${user_identification}${ext}`;
+      const newPath = path.join(uploadDir, newFilename);
+
+      // Guardar imagen optimizada
+      await sharp(req.file.path)
+        .resize({ width: 400 })
+        .toFormat("jpeg", { quality: 80 })
+        .toFile(newPath);
+
+      fs.unlinkSync(req.file.path); // eliminar temp
+
+      finalImagePath = path
+        .join("multimedia/profiles_pictures", newFilename)
+        .replace(/\\/g, "/");
+    }
+
+    // ❌ Solicitud de eliminar imagen sin subir nueva
+    if (delete_picture === "true" && !req.file) {
+      if (oldPic) {
+        const fullOldPath = path.join(__dirname, "..", oldPic);
+        if (fs.existsSync(fullOldPath)) fs.unlinkSync(fullOldPath);
+      }
+      finalImagePath = "";
+    }
+
+    // 🧩 Ejecutar actualización
+    await user_update({
+      userId,
+      user_identification,
+      user_name,
+      user_companyMail,
+      user_personalMail,
+      user_phone1,
+      user_phone2,
+      user_addres,
+      user_birthday,
+      user_startDate,
+      user_endDate,
+      user_updater: updater,
+      user_updateDate: now,
+      user_picture: finalImagePath,
+    });
+
+    res.status(200).json({ message: "Usuario actualizado correctamente." });
   } catch (error) {
-    console.error("Error en userUpdate:", error);
-    res.status(500).json({ message: "Error al actualizar el usuario" });
+    console.error("❌ Error actualizando usuario:", error);
+    res.status(500).json({ message: "Error actualizando usuario." });
   }
 };
 
@@ -206,10 +258,10 @@ const userDelete = async (req, res) => {
 
     await user_delete(id);
 
-    res.status(200).json({ message: "Usuario desactivado correctamente" });
+    res.status(200).json({ message: "Usuario eliminado correctamente." });
   } catch (error) {
-    console.error("Error en userDelete:", error);
-    res.status(500).json({ message: "Error al desactivar el usuario" });
+    console.error("❌ Error en userDelete:", error);
+    res.status(500).json({ message: "Error al eliminar el usuario." });
   }
 };
 

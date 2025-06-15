@@ -1,6 +1,5 @@
 // En user.queries.js
-const pool = require("../config/database");
-
+const db = require("../config/database");
 
 // 🔹 Query para crear un nuevo usuario
 // Recibe todos los campos de la tabla 'user'
@@ -65,7 +64,7 @@ const user_create = async (
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
-  await pool.query(sql, [
+  await db.execute(sql, [
     user_id,
     user_identification,
     user_name,
@@ -126,27 +125,31 @@ const user_getAll = async () => {
     FROM user
     WHERE user_condition = true
   `;
-  const [rows] = await pool.query(sql);
+  const [rows] = await db.execute(sql);
   return rows;
 };
 
 // 🔹 Actualiza la información de un usuario según su ID
-const user_update = async (
-  user_identification,
-  user_name,
-  user_companyMail,
-  user_personalMail,
-  user_phone1,
-  user_phone2,
-  user_addres,
-  user_birthday,
-  user_picture,
-  user_startDate,
-  user_endDate,
-  user_updateDate,
-  user_updater,
-  user_id
-) => {
+const user_update = async (data) => {
+  const {
+    userId,
+    user_identification,
+    user_name,
+    user_companyMail,
+    user_personalMail,
+    user_phone1,
+    user_phone2,
+    user_addres,
+    user_birthday,
+    user_startDate,
+    user_endDate,
+    user_updater,
+    user_updateDate,
+    user_picture, // string con ruta o '' si se elimina
+  } = data;
+
+  const safe = (val) => (val === undefined ? null : val);
+
   const sql = `
     UPDATE user SET
       user_identification = ?,
@@ -157,30 +160,32 @@ const user_update = async (
       user_phone2 = ?,
       user_addres = ?,
       user_birthday = ?,
-      user_picture = ?,
       user_startDate = ?,
       user_endDate = ?,
+      user_updater = ?,
       user_updateDate = ?,
-      user_updater = ?
+      user_picture = ?
     WHERE user_id = ?
   `;
 
-  await pool.query(sql, [
-    user_identification,
-    user_name,
-    user_companyMail,
-    user_personalMail,
-    user_phone1,
-    user_phone2,
-    user_addres,
-    user_birthday,
-    user_picture,
-    user_startDate,
-    user_endDate,
-    user_updateDate,
-    user_updater,
-    user_id
-  ]);
+  const params = [
+    safe(user_identification),
+    safe(user_name),
+    safe(user_companyMail),
+    safe(user_personalMail),
+    safe(user_phone1),
+    safe(user_phone2),
+    safe(user_addres),
+    user_birthday === "" ? null : user_birthday,
+    user_startDate === "" ? null : user_startDate,
+    user_endDate === "" ? null : user_endDate,
+    safe(user_updater),
+    safe(user_updateDate),
+    safe(user_picture || ""),
+    userId,
+  ];
+
+  await db.execute(sql, params);
 };
 
 // 🔹 Desactiva lógicamente un usuario (soft delete)
@@ -190,7 +195,7 @@ const user_delete = async (user_id) => {
     SET user_condition = false
     WHERE user_id = ?
   `;
-  await pool.query(sql, [user_id]);
+  await db.execute(sql, [user_id]); // usamos 'db' si ya cambiaste de 'pool'
 };
 
 // Exporta la función para ser usada en el controlador
@@ -198,5 +203,5 @@ module.exports = {
   user_create,
   user_getAll,
   user_update,
-  user_delete, 
+  user_delete,
 };

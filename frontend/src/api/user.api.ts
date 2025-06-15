@@ -1,5 +1,5 @@
 import api from "./axios";
-import type { UserForm, User, CreateUserResponse } from "../types/user";
+import type { User, CreateUserResponse } from "../types/user";
 
 
 // 🔹 Llama al backend para crear un nuevo usuario
@@ -19,11 +19,13 @@ export const getAllUsers = async (): Promise<User[]> => {
 
 
 // 🔹 Elimina lógicamente un usuario por ID (soft delete)
-export const deleteUser = async (id: string): Promise<void> => {
-  await api.delete(`/user/${id}`);
+export const deleteUser = async (userId: string): Promise<{ data: { message: string } }> => {
+  return await api.delete(`/user/${userId}`);
 };
 
+
 // 🔹 Actualiza los datos generales del usuario
-export const updateUser = async (id: string, data: Partial<UserForm>): Promise<void> => {
-  await api.put(`/user/${id}`, data);
+export const updateUser = async (userId: string, formData: FormData): Promise<{ data: { message: string } }> => {
+  return await api.put(`/user/${userId}`, formData);
 };
+
