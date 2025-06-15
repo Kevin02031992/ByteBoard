@@ -2,7 +2,7 @@ import React from "react";
 import { PersonPlus, PersonDash, Eye, Pencil, ArrowClockwise, Search, XCircle, Upload, Eraser } from "react-bootstrap-icons";
 
 interface ButtonProps {
-  label: string;
+  label: React.ReactNode;
   onClick?: () => void;
   className?: string;
   style?: React.CSSProperties;

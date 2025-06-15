@@ -12,45 +12,45 @@ interface ModalAlertProps {
 const ModalAlert: React.FC<ModalAlertProps> = ({ show, type, message, onClose }) => {
   if (!show) return null;
 
-  // 🎨 Colores e íconos por tipo
   const config = {
     success: {
-      bg: "#d1e7dd",
       border: "#0f5132",
       icon: <CheckCircle size={40} className="text-success" />,
     },
     error: {
-      bg: "#f8d7da",
       border: "#842029",
       icon: <XCircle size={40} className="text-danger" />,
     },
     warning: {
-      bg: "#fff3cd",
       border: "#664d03",
       icon: <ExclamationCircle size={40} className="text-warning" />,
     },
     info: {
-      bg: "#cff4fc",
       border: "#055160",
       icon: <InfoCircle size={40} className="text-info" />,
     },
   }[type];
 
   return (
-    <div className="modal d-block bg-dark bg-opacity-50">
-      <div className="modal-dialog modal-sm">
-        <div
-          className="modal-content text-center p-4"
-          style={{
-            backgroundColor: config.bg,
-            border: `2px solid ${config.border}`,
-            borderRadius: "1rem",
-          }}
-        >
-          <div className="mb-2">{config.icon}</div>
-          <p className="mb-4" style={{ color: config.border }}>
-            {message}
-          </p>
+    <div
+      className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.5)", zIndex: 1055 }}
+    >
+      <div
+        className="rounded shadow p-4"
+        style={{
+          width: "500px",
+          maxWidth: "90%",
+          backgroundColor: "#fff",
+          border: `2px solid ${config.border}`,
+        }}
+      >
+        <div className="d-flex align-items-center gap-3 mb-3">
+          {config.icon}
+          <p className="mb-0" style={{ color: config.border }}>{message}</p>
+        </div>
+
+        <div className="d-flex justify-content-end">
           <ButtonComponent
             label="Cerrar"
             className="btn-hover-effect"

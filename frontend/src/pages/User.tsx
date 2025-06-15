@@ -13,6 +13,7 @@ import ModalAlert from "../components/ModalAlert";
 import ModalRead from "../components/ModalRead";
 import ModalUpdate from "../components/ModalUpdate";
 import ModalDecision from "../components/ModalDecision";
+import { ArrowLeftCircle, ArrowRightCircle } from "react-bootstrap-icons";
 
 const UserPage = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -112,7 +113,6 @@ const UserPage = () => {
     };
 
     const handleCreate = async () => {
-
         if (!validateBeforeSubmit()) return;
         try {
             const data = new FormData();
@@ -132,14 +132,13 @@ const UserPage = () => {
             }
 
             // ✅ Enviar al backend
-            const res = await createUser(data);
-            alert(`✅ Usuario creado con ID: ${res.data.user_id}`);
-
+            await createUser(data);
+            showModalAlert(`Usuario creado correctamente.`, "success");
+            resetForm();
             fetchUsers();
             setShowCreate(false);
         } catch (error) {
-            console.error("Error al crear usuario:", error);
-            alert("❌ No se pudo crear el usuario");
+            showModalAlert(`${error}`, "error");
         }
     };
 
@@ -179,13 +178,13 @@ const UserPage = () => {
 
         // 🧪 Validar tipo
         if (!allowedTypes.includes(file.type)) {
-            alert("Solo se permiten imágenes en formato PNG o JPG.");
+            showModalAlert(`Solo se permiten imágenes en formato PNG o JPG.`, "warning");
             return;
         }
 
         // 🧪 Validar tamaño
         if (file.size > maxSizeMB * 1024 * 1024) {
-            alert(`El archivo es demasiado grande. Máximo permitido: ${maxSizeMB}MB.`);
+            showModalAlert(`El archivo es demasiado grande. Máximo permitido: ${maxSizeMB}MB.`, "warning");
             return;
         }
 
@@ -255,14 +254,12 @@ const UserPage = () => {
 
             // 📡 Llamar backend
             const res = await updateUser(selectedUser.user_id, data);
-
-            alert(`✅ Usuario actualizado: ${res.data.message}`);
+            showModalAlert(`${res.data.message}`, "success");
             fetchUsers(); // Recarga usuarios
             setShowUpdate(false);
             resetForm();
         } catch (error) {
-            console.error("❌ Error actualizando usuario:", error);
-            alert("❌ No se pudo actualizar el usuario.");
+            showModalAlert(`${error}`, "error");
         }
     };
 
@@ -271,11 +268,10 @@ const UserPage = () => {
 
         try {
             const res = await deleteUser(selectedUser.user_id);
-            alert(`✅ ${res.data.message}`);
+            showModalAlert(`${res.data.message}`, "success");
             fetchUsers();
         } catch (error) {
-            console.error("❌ Error eliminando usuario:", error);
-            alert("❌ No se pudo eliminar el usuario.");
+            showModalAlert(`${error}`, "error");
         } finally {
             setShowDelete(false);
             setSelectedUser(null);
@@ -301,11 +297,10 @@ const UserPage = () => {
             !user_phone1 ||
             !user_birthday ||
             !user_password ||
+            !confirmPassword ||
             !user_startDate
         ) {
-            setAlertMessage("❗ Debes llenar todos los campos obligatorios.");
-            setAlertType("warning");
-            setShowAlert(true);
+            showModalAlert(`Debes llenar todos los campos obligatorios.`, "warning");
             return false;
         }
 
@@ -319,17 +314,13 @@ const UserPage = () => {
             /[^A-Za-z0-9]/.test(user_password);
 
         if (!isValidPassword) {
-            setAlertMessage("❌ La contraseña no cumple con los requisitos.");
-            setAlertType("error");
-            setShowAlert(true);
+            showModalAlert(`La contraseña no cumple con los requisitos.`, "error");
             return false;
         }
 
         // Coincidencia con confirmación
         if (formData.user_password !== confirmPassword) {
-            setAlertMessage("❌ Las contraseñas no coinciden.");
-            setAlertType("error");
-            setShowAlert(true);
+            showModalAlert(`Las contraseñas no coinciden.`, "error");
             return false;
         }
 
@@ -376,6 +367,12 @@ const UserPage = () => {
         })} a las ${date.toLocaleTimeString("es-CR", {
             hour12: false,
         })}`;
+    };
+
+    const showModalAlert = (message: string, type: "success" | "error" | "warning" | "info") => {
+        setAlertMessage(message);
+        setAlertType(type);
+        setShowAlert(true);
     };
 
 
@@ -431,12 +428,11 @@ const UserPage = () => {
                 {/* 🧾 Tabla */}
                 <div className="table-responsive">
                     <TableComponent
-                        headers={["ID", "Cédula", "Nombre", "Correo", "Teléfono", "Estado", "Acciones"]}
+                        headers={["Cédula", "Nombre", "Correo", "Teléfono", "Estado", "Acciones"]}
                         centered
                     >
                         {currentUsers.map(user => (
                             <tr key={user.user_id}>
-                                <td>{user.user_id}</td>
                                 <td>{user.user_identification}</td>
                                 <td>{user.user_name}</td>
                                 <td>{user.user_companyMail}</td>
@@ -493,20 +489,36 @@ const UserPage = () => {
                     <span style={{ visibility: "hidden" }}>espacio</span>
                     <div className="d-flex justify-content-center gap-3">
                         <ButtonComponent
-                            label="◀"
-                            className="text-white btn-hover-effect"
-                            style={{ backgroundColor: "#6c757d", border: "none", width: "60px" }}
+                            label={<ArrowLeftCircle size={20} />}
+                            className="d-flex align-items-center justify-content-center text-white btn-hover-effect"
+                            style={{
+                                backgroundColor: "#6c757d",
+                                border: "none",
+                                width: "60px",
+                                height: "40px",
+                                transition: "all 0.3s ease",
+                                lineHeight: "1",
+                            }}
                             onClick={prevPage}
                             disabled={currentPage === 1}
                         />
+
                         <ButtonComponent
-                            label="▶"
-                            className="text-white btn-hover-effect"
-                            style={{ backgroundColor: "#6c757d", border: "none", width: "60px" }}
+                            label={<ArrowRightCircle size={20} />}
+                            className="d-flex align-items-center justify-content-center text-white btn-hover-effect"
+                            style={{
+                                backgroundColor: "#6c757d",
+                                border: "none",
+                                width: "60px",
+                                height: "40px",
+                                transition: "all 0.3s ease",
+                                lineHeight: "1",
+                            }}
                             onClick={nextPage}
                             disabled={currentPage === totalPages}
                         />
                     </div>
+
                     <span className="text-muted small">Página {currentPage} de {totalPages}</span>
                 </div>
             </div>
@@ -515,6 +527,7 @@ const UserPage = () => {
                     title="Crear nuevo usuario"
                     onClose={handleCloseModal}
                     onSubmit={handleCreate}
+
                 >
                     <div className="row g-3 px-2">
                         <div className="col-md-6">
