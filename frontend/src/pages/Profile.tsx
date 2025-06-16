@@ -16,6 +16,8 @@ import ModalDecision from "../components/ModalDecision";
 import ModalAlert from "../components/ModalAlert";
 import { ArrowLeftCircle, ArrowRightCircle } from "react-bootstrap-icons";
 import { formatDate } from "../utils/formatDate.util";
+import ModalAccessAssignment from "../components/ModalAccessAssignment";
+
 
 
 const ProfilePage = () => {
@@ -32,11 +34,13 @@ const ProfilePage = () => {
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
     const [alertType, setAlertType] = useState<"error" | "success" | "warning" | "info">("error");
-
     const indexLast = currentPage * profilesPerPage;
     const indexFirst = indexLast - profilesPerPage;
     const currentProfiles = filteredProfiles.slice(indexFirst, indexLast);
     const totalPages = Math.ceil(filteredProfiles.length / profilesPerPage);
+    const [showAssignModal, setShowAssignModal] = useState(false);
+    const [selectedProfileForAccess, setSelectedProfileForAccess] = useState<Profile | null>(null);
+
 
     const INITIAL_FORM: ProfileForm = {
         profile_name: "",
@@ -226,6 +230,17 @@ const ProfilePage = () => {
                                                     setShowDelete(true);
                                                 }}
                                             />
+                                            <ButtonComponent
+                                                label="Asignar Accesos"
+                                                use="assign"
+                                                size="sm"
+                                                className="btn-primary text-white"
+                                                onClick={() => {
+                                                    setSelectedProfileForAccess(p);
+                                                    setShowAssignModal(true);
+                                                }}
+                                            />
+
                                         </div>
                                     </td>
                                 </tr>
@@ -367,6 +382,15 @@ const ProfilePage = () => {
                         setSelectedProfile(null);
                     }}
                     onConfirm={handleDelete}
+                />
+            )}
+            {showAssignModal && selectedProfileForAccess && (
+                <ModalAccessAssignment
+                    profile={selectedProfileForAccess}
+                    onClose={() => {
+                        setShowAssignModal(false);
+                        setSelectedProfileForAccess(null);
+                    }}
                 />
             )}
 

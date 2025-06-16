@@ -1,5 +1,6 @@
 import React from "react";
-import { PersonPlus, PersonDash, Eye, Pencil, ArrowClockwise, Search, XCircle, Upload, Eraser, Key, Ban } from "react-bootstrap-icons";
+import { PersonPlus, PersonDash, Eye, Pencil, ArrowClockwise, Search, XCircle, Upload, Eraser, 
+  Key, Ban, PatchPlus } from "react-bootstrap-icons";
 
 interface ButtonProps {
   label: React.ReactNode;
@@ -9,7 +10,8 @@ interface ButtonProps {
   disabled?: boolean;
   size?: "sm" | "lg";
   use?: "addUser" | "deleteUser" | "viewUser" | "editUser" | "reload" | "search" | "cancel" | "upload" | "delete" |
-  "addAccess" | "viewAccess" | "editAccess" | "deleteAccess" | "addProfile" | "viewProfile" | "editProfile" | "deleteProfile";
+  "addAccess" | "viewAccess" | "editAccess" | "deleteAccess" | "addProfile" | "viewProfile" | "editProfile" | "deleteProfile"
+  | "assign";
   type?: "button" | "submit" | "reset";
 }
 
@@ -55,6 +57,8 @@ const ButtonComponent: React.FC<ButtonProps> = ({
       case "deleteAccess":
       case "deleteProfile":
         return <Ban className="me-1" />;
+      case "assign":
+        return <PatchPlus className="me-1" />;
       default:
         return null;
     }
